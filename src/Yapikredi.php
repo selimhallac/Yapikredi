@@ -1,7 +1,7 @@
 <?php
 
 namespace Phpdev;
-
+Use DOMDocument;
 Class Yapikredi
 {
     
@@ -16,7 +16,6 @@ Class Yapikredi
         $this->password       = $password;
         $this->customerno     = $customerno;
     }
-    
     
     public function hesap_hareketleri($tarih1, $tarih2)
     {
@@ -35,8 +34,8 @@ Class Yapikredi
             <wsse:Security soapenv:mustUnderstand="1" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" 
             xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
                 <wsse:UsernameToken wsu:Id="UsernameToken-D1A5C91F8C11FC7F2614479411111111">
-                    <wsse:Username>'.$data['username'].'</wsse:Username>
-                    <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">'.$data['password'].'</wsse:Password>
+                    <wsse:Username>'.$this->username.'</wsse:Username>
+                    <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">'.$this->password.'</wsse:Password>
                     <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">
                     GQ5DlhNjctYjRlMC00MmNjLWI5YjYtOWZhNWFiOWNhYjg2</wsse:Nonce>
                     <wsu:Created>2017-01-12T14:07:00.620Z</wsu:Created>
@@ -50,17 +49,17 @@ Class Yapikredi
                     <!--Optional:-->
                     <baslangicSaat>0000</baslangicSaat>
                     <!--Optional:-->
-                    <baslangicTarih>'.date('Ymd',strtotime($data['start_date'])).'</baslangicTarih>
+                    <baslangicTarih>'.date('Ymd',strtotime($tarih1)).'</baslangicTarih>
                     <!--Optional:-->
                     <bitisSaat>2359</bitisSaat>
                     <!--Optional:-->
-                    <bitisTarih>'.date('Ymd',strtotime($data['end_date'])).'</bitisTarih>
+                    <bitisTarih>'.date('Ymd',strtotime($tarih2)).'</bitisTarih>
                     <!--Optional:-->
                     <dovizKodu></dovizKodu>
                     <!--Optional:-->
-                    <firmaKodu>'.$data['subeno'].'</firmaKodu>
+                    <firmaKodu>'.$this->customerno.'</firmaKodu>
                     <!--Optional:-->
-                    <hesapNo></hesapNo>
+                    
                 </arg0>
             </intf:sorgula>
         </soapenv:Body>
@@ -68,7 +67,6 @@ Class Yapikredi
         ));
         $response = curl_exec($curl);
         $err = curl_error($curl);
-
         curl_close($curl);
         if (!$err) {
             $dom = new DOMDocument();
